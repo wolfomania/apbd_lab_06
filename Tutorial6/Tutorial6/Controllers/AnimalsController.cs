@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Tutorial6.Models;
+using Tutorial6.Models.DTOs;
 
 namespace Tutorial6.Controllers;
 
@@ -44,5 +45,21 @@ public class AnimalsController : ControllerBase
         }
         
         return Ok(animals);
+    }
+
+    [HttpPost]
+    public IActionResult AddAnimal(AddAnimalRequest animal)
+    {
+        using SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("Default"));
+        connection.Open();
+
+        using SqlCommand command = new SqlCommand();
+        command.Connection = connection;
+        command.CommandText = "INSERT INTO Animal VALUES (@animalName, '', '', '')";
+        command.Parameters.AddWithValue("animalName", animal.Name);
+        
+        command.ExecuteNonQuery();
+
+        return Created("", animal);
     }
 }
