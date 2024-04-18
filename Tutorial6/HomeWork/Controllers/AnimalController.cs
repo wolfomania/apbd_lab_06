@@ -106,7 +106,7 @@ public class AnimalsController : ControllerBase
         });
     }
     
-    [HttpDelete("{idAnimal}")]
+    [HttpDelete("{idAnimal:int}")]
     public IActionResult DeleteAnimal(int idAnimal)
     {
         using SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("Default"));
